@@ -35,7 +35,7 @@ PORT = 5010
 # example:
 #      Redis: redis://:password@ip:port/db
 #      Ssdb:  ssdb://:password@ip:port
-DB_CONN = 'redis://:pwd@127.0.0.1:6379/0'
+DB_CONN = 'redis://@127.0.0.1:6379/0'
 
 # proxy table name
 TABLE_NAME = 'use_proxy'
@@ -58,7 +58,11 @@ PROXY_FETCHER = [
 ]
 
 # ############# proxy validator #################
-VERIFY_URL = "http://www.baidu.com"
+VERIFY_URL = [
+   "http://www.baidu.com",
+   "https://www.amazon.com/",
+   "https://www.1688.com/",
+]
 
 VERIFY_TIMEOUT = 10
 

@@ -32,19 +32,36 @@ def timeOutValidator(proxy):
     :param proxy:
     :return:
     """
-
-    proxies = {"http": "http://{proxy}".format(proxy=proxy), "https": "https://{proxy}".format(proxy=proxy)}
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0',
-               'Accept': '*/*',
-               'Connection': 'keep-alive',
-               'Accept-Language': 'zh-CN,zh;q=0.8'}
-    try:
-        r = requests.head(conf.verifyUrl, headers=headers, proxies=proxies, timeout=conf.verifyTimeout, verify=False)
-        if r.status_code == 200:
-            return True
-    except Exception as e:
-        pass
-    return False
+    if(isinstance(conf.verifyUrl, list)):
+        result = False
+        for url in conf.verifyUrl:
+            proxies = {"http": "http://{proxy}".format(proxy=proxy), "https": "https://{proxy}".format(proxy=proxy)}
+            headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0',
+                    'Accept': '*/*',
+                    'Connection': 'keep-alive',
+                    'Accept-Language': 'zh-CN,zh;q=0.8'}
+            try:
+                r = requests.head(url, headers=headers, proxies=proxies, timeout=conf.verifyTimeout, verify=False)
+                if r.status_code == 200:
+                    result = True
+                    print('testing url: '+url + ' passed.')
+            except Exception as e:
+                print('testing url: '+ url + ' failed.')
+                pass
+        return result
+    else:
+        proxies = {"http": "http://{proxy}".format(proxy=proxy), "https": "https://{proxy}".format(proxy=proxy)}
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0',
+                'Accept': '*/*',
+                'Connection': 'keep-alive',
+                'Accept-Language': 'zh-CN,zh;q=0.8'}
+        try:
+            r = requests.head(conf.verifyUrl, headers=headers, proxies=proxies, timeout=conf.verifyTimeout, verify=False)
+            if r.status_code == 200:
+                return True
+        except Exception as e:
+            pass
+        return False
 
 
 @validator
